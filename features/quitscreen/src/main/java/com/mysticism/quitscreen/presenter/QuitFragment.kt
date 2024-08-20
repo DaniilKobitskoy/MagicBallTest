@@ -8,10 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebChromeClient
+import android.webkit.WebResourceError
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.mysticism.quitscreen.R
+import com.github.terrakok.cicerone.Router
+import com.mysticism.core.media.MusicPlayerManager
 import com.mysticism.quitscreen.databinding.FragmentQuitBinding
 import org.koin.android.ext.android.inject
 
@@ -19,7 +24,10 @@ class QuitFragment : Fragment(), QuitContract.View {
 
     private val presenter: QuitPresenter by inject()
     private lateinit var webView: WebView
-    lateinit var binding: FragmentQuitBinding
+    private lateinit var progressBar: ProgressBar
+    private lateinit var binding: FragmentQuitBinding
+    private val router: Router by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         presenter.onViewReady()
@@ -30,15 +38,16 @@ class QuitFragment : Fragment(), QuitContract.View {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentQuitBinding.inflate(inflater, container, false)
-
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         webView = binding.webview
-
+        progressBar = binding.progressBar
+        Toast.makeText(requireContext(), "Wait please...", Toast.LENGTH_SHORT).show()
+        MusicPlayerManager.initialize(requireContext())
+        MusicPlayerManager.stop()
         webView.settings.apply {
             javaScriptEnabled = true
             domStorageEnabled = true
@@ -46,11 +55,27 @@ class QuitFragment : Fragment(), QuitContract.View {
         }
 
         webView.webChromeClient = WebChromeClient()
-        webView.webViewClient = WebViewClient()
+        webView.webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                webView.visibility = View.VISIBLE
+                progressBar.visibility = View.GONE
+            }
+
+            override fun onReceivedError(
+                view: WebView?,
+                request: WebResourceRequest?,
+                error: WebResourceError?
+            ) {
+                super.onReceivedError(view, request, error)
+                showError("Failed to load page. Check internet connection.")
+            }
+        }
 
         webView.loadUrl("https://youtu.be/KM8rr3XJpZY?si=3cxms2HosRWKJJ2L")
     }
-   override fun handleBackPressed() {
+
+    override fun handleBackPressed() {
         if (webView.canGoBack()) {
             webView.goBack()
         } else {
@@ -59,7 +84,8 @@ class QuitFragment : Fragment(), QuitContract.View {
     }
 
     override fun showError(message: String) {
-        // Реализуйте показ ошибки
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+        router.exit()
     }
 
     override fun openGallery() {

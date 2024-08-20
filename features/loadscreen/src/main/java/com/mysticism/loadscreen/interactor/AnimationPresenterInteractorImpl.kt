@@ -23,7 +23,6 @@ class AnimationPresenterInteractorImpl(
 
     override fun onStop() {
         job?.cancel()
-       // view.stopAnimation()
     }
 
     private suspend fun startImageSequence() {
@@ -40,9 +39,9 @@ class AnimationPresenterInteractorImpl(
 
         for (image in images) {
             view.showImage(image)
-            delay(500) // задержка между кадрами
+            delay(500)
         }
 
-        view.startAnimation() // Запуск анимации заново
+        view.startAnimation()
     }
 }

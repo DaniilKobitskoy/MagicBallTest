@@ -39,7 +39,6 @@ dependencies {
     implementation(libs.material)
     implementation(project(":core"))
     implementation(project(":features:menuscreen"))
-//    implementation(project(":features:menuscreen"))  // Избегайте зависимости от app или других feature-модулей
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

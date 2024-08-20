@@ -25,15 +25,15 @@ class DoubleGamePresenterImpl(
     private var isAnimationInProgress = false
     private val scope = CoroutineScope(Dispatchers.Main + Job())
 
-    // Добавлено для сохранения состояния
-
     private var savedItemIndex: Int? = null
+
     override fun getSavedItemIndex(): Int? {
         return savedItemIndex
     }
+
     override fun onSettingsClick() {
         ClickSoundPlayer.playClickSound()
-        saveCurrentState() // Сохраняем текущее состояние перед переходом на экран настроек
+        saveCurrentState()
         router.navigateTo(SettingsScreen(router))
     }
 
@@ -41,21 +41,14 @@ class DoubleGamePresenterImpl(
         savedItemIndex = currentItemIndex
     }
 
-//    override fun onRestartClick() {
-//        ClickSoundPlayer.playClickSound()
-//        restartGame()
-//        doubleGameViewModel.ballImage = R.drawable.item_1
-//        doubleGameViewModel.isRetryVisible = false
-//        savedItemIndex = null // Сбрасываем сохраненное состояние при перезапуске игры
-//    }
-
     override fun onRestartClick() {
         ClickSoundPlayer.playClickSound()
         restartGame()
         doubleGameViewModel.ballImage = R.drawable.item_1
         doubleGameViewModel.isRetryVisible = false
-        savedItemIndex = null // Сбрасываем сохраненное состояние при перезапуске игры
+        savedItemIndex = null
     }
+
     private fun restartGame() {
         doubleGameViewModel.currentItemIndex = 0
         val itemImages = interactor.getItemImages()

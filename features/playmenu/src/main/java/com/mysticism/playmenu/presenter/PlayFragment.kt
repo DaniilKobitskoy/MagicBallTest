@@ -18,10 +18,8 @@ class PlayFragment : Fragment(), PlayContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Initialize ClickSoundPlayer here
         ClickSoundPlayer.initialize(requireContext())
 
-        // Get Presenter with current View instance
         presenter = getKoin().get(qualifier = null, parameters = { parametersOf(this) })
     }
 
@@ -82,7 +80,6 @@ class PlayFragment : Fragment(), PlayContract.View {
 
     override fun onDestroy() {
         super.onDestroy()
-        // Release resources if necessary
-        ClickSoundPlayer.release() // Uncomment if ClickSoundPlayer.release() is necessary
+        ClickSoundPlayer.release()
     }
 }

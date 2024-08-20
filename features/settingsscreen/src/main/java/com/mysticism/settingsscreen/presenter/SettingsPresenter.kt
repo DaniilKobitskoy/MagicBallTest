@@ -18,17 +18,11 @@ class SettingsPresenter(private val interactor: SettingsInteractor, private val 
         view.showSettings(isMusicPlaying, isClickSoundEnabled)
     }
 
-    fun onBackClicked() {
-        view?.close()
-        playClickSound()
-    }
-
     fun onRestartClicked() {
-        // Reset game state
         gameViewModel.ballImage = R.drawable.ball_1
         gameViewModel.isRetryVisible = false
+        gameViewModel.resetGame()
         gameViewModel2.resetGame()
-        // view?.restartApplication()
         playClickSound()
     }
 

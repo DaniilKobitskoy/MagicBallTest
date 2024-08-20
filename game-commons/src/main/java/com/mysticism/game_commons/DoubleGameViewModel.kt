@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 
 class DoubleGameViewModel : ViewModel() {
     var currentItemIndex: Int = 0
-    var isAnimationInProgress: Boolean = false
     var ballImage: Int = R.drawable.item_1
     var isRetryVisible: Boolean = false
 

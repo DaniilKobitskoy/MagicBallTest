@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.mysticism.firstgame.databinding.FragmentFirstGameBinding
 import com.mysticism.firstgame.util.ShakeDetector
+import com.mysticism.game_commons.GameSharedViewModel
 import com.mysticism.game_commons.GameViewModel
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
@@ -17,6 +19,7 @@ class FirstGameFragment : Fragment(), FirstGameContract.View {
     private lateinit var binding: FragmentFirstGameBinding
     private val presenter: FirstGamePresenter by inject { parametersOf(this) }
     private val viewModel: GameViewModel by activityViewModels()
+    private val sharedViewModel: GameSharedViewModel by activityViewModels()
     private lateinit var shakeDetector: ShakeDetector
 
     override fun onCreateView(
@@ -33,7 +36,6 @@ class FirstGameFragment : Fragment(), FirstGameContract.View {
         shakeDetector = ShakeDetector { presenter.onMagicBallClicked() }
         shakeDetector.start(requireContext())
 
-        //binding.magicball.setOnClickListener { presenter.onMagicBallClicked() }
         binding.retry.setOnClickListener { presenter.onRetryClicked() }
         binding.menu.setOnClickListener { presenter.onMenuClicked() }
         binding.resume.setOnClickListener { presenter.onResumeClicked() }
@@ -42,8 +44,14 @@ class FirstGameFragment : Fragment(), FirstGameContract.View {
         binding.quit.setOnClickListener { presenter.onQuitClicked() }
         binding.tomainmenu.setOnClickListener { presenter.onQuitClicked() }
 
-        // Restore game state
         updateUIFromViewModel()
+
+        sharedViewModel.gameResetEvent.observe(viewLifecycleOwner, Observer { resetGame ->
+            if (resetGame) {
+                resetGameState()
+                sharedViewModel.resetGameStateHandled()
+            }
+        })
     }
 
     override fun onDestroyView() {
@@ -51,11 +59,16 @@ class FirstGameFragment : Fragment(), FirstGameContract.View {
         shakeDetector.stop(requireContext())
     }
 
+    override fun resetGameState() {
+        viewModel.resetGame()
+        updateUIFromViewModel()
+        updatePlayScreenVisibility(View.VISIBLE)
+        updatePopupMenuVisibility(View.GONE)
+    }
+
     private fun updateUIFromViewModel() {
         binding.magicball.setImageResource(viewModel.ballImage)
-        viewModel.isRetryVisible.let {
-            binding.retry.visibility = if (it) View.VISIBLE else View.GONE
-        }
+        binding.retry.visibility = if (viewModel.isRetryVisible) View.VISIBLE else View.GONE
     }
 
     override fun showRandomAnswer(imageResource: Int) {

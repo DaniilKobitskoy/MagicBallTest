@@ -47,11 +47,6 @@ class LoadFragment(private val router: Router) : Fragment(), AnimationView {
     override fun startAnimation() {
         presenter.onStart()
     }
-
-//    override fun stopAnimation() {
-//
-//    }
-
     override fun showImage(imageResId: Int) {
         imageView.setImageResource(imageResId)
     }

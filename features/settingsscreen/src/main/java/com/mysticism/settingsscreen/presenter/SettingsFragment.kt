@@ -10,6 +10,7 @@ import android.widget.ImageView
 import androidx.fragment.app.activityViewModels
 import com.github.terrakok.cicerone.Router
 import com.mysticism.game_commons.DoubleGameViewModel
+import com.mysticism.game_commons.GameSharedViewModel
 import com.mysticism.game_commons.GameViewModel
 import com.mysticism.settingsscreen.R
 import com.mysticism.settingsscreen.databinding.FragmentSettingsBinding
@@ -24,6 +25,7 @@ class SettingsFragment : Fragment(), SettingsView {
     private val router: Router by inject()
     private val gameViewModel: GameViewModel by activityViewModels()
     private val gameViewModel2: DoubleGameViewModel by activityViewModels()
+    private val sharedViewModel: GameSharedViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +47,7 @@ class SettingsFragment : Fragment(), SettingsView {
         back.setOnClickListener { router.exit() }
         restart.setOnClickListener {
             presenter.onRestartClicked()
+            sharedViewModel.triggerGameReset()
             router.exit()
         }
         volume1.setOnClickListener { presenter.onVolume1Clicked() }

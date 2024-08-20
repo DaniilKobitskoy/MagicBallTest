@@ -8,6 +8,8 @@ interface FirstGameContract {
         fun updatePopupMenuVisibility(visibility: Int)
         fun updateMagicBallImage(imageResource: Int)
         fun animateShake()
+        fun resetGameState()
+
     }
 
     interface Presenter {

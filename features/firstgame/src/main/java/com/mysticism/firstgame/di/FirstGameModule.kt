@@ -16,6 +16,5 @@ class FirstGameModule : BaseModule() {
 
         factory { FirstGameInteractor() }
 
-        // factory { com.mysticism.core.media.ClickSoundPlayer(get()) }
     }
 }

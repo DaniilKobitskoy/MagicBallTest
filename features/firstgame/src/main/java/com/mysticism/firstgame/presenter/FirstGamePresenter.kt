@@ -1,7 +1,6 @@
 package com.mysticism.firstgame.presenter
 
 import android.view.View
-
 import com.github.terrakok.cicerone.Router
 import com.mysticism.firstgame.interactor.FirstGameInteractor
 import com.mysticism.settingsscreen.presenter.SettingsScreen
@@ -45,6 +44,7 @@ class FirstGamePresenter(
     }
 
     override fun onRestartClicked() {
+        view.resetGameState()
         view.updateMagicBallImage(interactor.getInitialBallImage())
         view.updateRetryVisibility(View.GONE)
         view.updatePlayScreenVisibility(View.VISIBLE)

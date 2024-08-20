@@ -66,6 +66,5 @@ class MenuFragment : Fragment(), MenuView {
     override fun onDestroy() {
         super.onDestroy()
         (presenter as MenuPresenterImpl).detachView()
-        // ClickSoundPlayer.release()
     }
 }

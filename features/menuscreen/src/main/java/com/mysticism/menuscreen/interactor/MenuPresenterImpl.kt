@@ -1,6 +1,5 @@
 package com.mysticism.menuscreen.interactor
 
-import com.github.terrakok.cicerone.Router
 import com.mysticism.core.media.ClickSoundPlayer
 
 class MenuPresenterImpl: MenuPresenter {
