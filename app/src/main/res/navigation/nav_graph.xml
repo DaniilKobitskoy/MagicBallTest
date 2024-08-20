@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <fragment
+        android:id="@+id/loadFragment"
+        android:name="com.mysticism.loadscreen.presenter.LoadFragment"
+        android:label="Load Fragment"
+        tools:layout="@layout/fragment_load">
+        <action
+            android:id="@+id/action_loadFragment_to_menuFragment"
+            app:destination="@id/menuFragment"
+            app:enterAnim="@anim/enter_animation"
+            app:exitAnim="@anim/exit_animation" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="com.mysticism.menuscreen.presenter.MenuFragment"
+        android:label="Menu Fragment"
+        tools:layout="@layout/fragment_menu">
+    </fragment>
+</navigation>
